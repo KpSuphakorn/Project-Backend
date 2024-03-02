@@ -32,14 +32,14 @@ const CampgroundSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a telephone number"],
     },
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
-  // {
-  //   toJSON: { virtuals: true },
-  //   toObject: { virtuals: true },
-  // }
 );
 
-/*
+
 //Reverse populate with virtuals
 CampgroundSchema.virtual("reservations", {
   ref: "Reservation",
@@ -48,6 +48,7 @@ CampgroundSchema.virtual("reservations", {
   justOne: false,
 });
 
+/*
 //Cascade delete reservation when campground delete
 CampgroundSchema.pre(
   "deleteOne",

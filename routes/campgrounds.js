@@ -7,24 +7,24 @@ const {
   deleteCampground,
 } = require("../controllers/campgrounds");
 
-/*
+
 //Include other resource routers
-const appointmentRouter = require("./reservations");
-*/
+const reservationRouter = require("./reservations");
+
 
 const router = express.Router();
-//const { protect, authorize } = require("../middleware/auth");
+const { protect, authorize } = require("../middleware/user");
 
-/*
+
 //Re-route into other resource routers
-router.use("/:hospitalId/appointments/", appointmentRouter);
-*/
+router.use("/:campgroundId/reservations/", reservationRouter);
 
-router.route("/").get(getCampgrounds).post(createCampground);
+
+router.route("/").get(getCampgrounds).post(protect, authorize("admin"), createCampground);
 router
   .route("/:id")
   .get(getCampground)
-  .put(updateCampground)
-  .delete(deleteCampground);
+  .put(protect, authorize("admin"), updateCampground)
+  .delete(protect, authorize("admin"), deleteCampground);
 
 module.exports = router;

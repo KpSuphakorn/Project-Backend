@@ -1,9 +1,8 @@
 const User = require ('../models/User');
 
 //@desc         Register user 
-//@route        POST /api/v1/auth/register
+//@route        POST /api-informations/users/register
 //@access       Public
-
 exports.register = async (req , res , next) => {
     try {
         const {name , tel ,  email , password , role} = req.body;

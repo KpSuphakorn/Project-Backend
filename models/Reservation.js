@@ -10,7 +10,7 @@ const ReservedSchema = new mongoose.Schema({
         ref: 'User',
         required:true
     },
-    hospital: {
+    campground: {
         type: mongoose.Schema.ObjectId,
         ref: 'Campground',
         required: true
@@ -21,4 +21,4 @@ const ReservedSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Reserved',ReservedSchema);
+module.exports = mongoose.model('Reservation',ReservedSchema);

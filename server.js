@@ -24,11 +24,11 @@ const swaggerOptions = {
         info: {
             title: 'Library API',
             version: '1.0.0',
-            description: 'A simple Express VacQ API'
+            description: 'A simple Express Campground API'
         },
         servers: [
             {
-                url: 'http://localhost:5000/api/v1'
+                url: 'http://localhost:5000/api/api-informations'
             }
         ],
     },
@@ -58,13 +58,13 @@ app.use(hpp());
 
 app.use(cors());
 
-const hospitals = require('./routes/campgrounds');
-const auth = require('./routes/users');
-const appointments = require('./routes/reservations');
+const campgrounds = require('./routes/campgrounds');
+const users = require('./routes/users');
+const reservations = require('./routes/reservations');
 
-app.use('/api/v1/campgrounds', campgrounds);
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/appointments', appointments);
+app.use('/api-informations/campgrounds', campgrounds);
+app.use('/api-informations/users', users);
+app.use('/api-informations/reservations', reservations);
 
 const PORT=process.env.PORT || 5000;
 

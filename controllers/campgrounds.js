@@ -76,7 +76,7 @@ exports.getCampgrounds = async (req, res, next) => {
       data: camgrounds,
     });
   } catch (error) {
-    res.status(400).json({ success: false });
+    res.status(400).json({ success: false , message:"bad request"});
   }
 };
 
