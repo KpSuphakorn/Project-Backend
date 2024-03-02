@@ -1,0 +1,8 @@
+# ignore package/node module
+node_modules/*
+package-lock.json
+package.json
+#ignore config
+config/*
+#ignore server.js
+server.js
