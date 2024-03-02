@@ -1,10 +1,10 @@
 const Reserved = require('../models/Reserved');
-const Campground = require('../models/Reserved');
+const Campground = require('../models/Campground');
 
 //@desc     Get all reserved
 //@route    Get /api/v1/reserved
 //@access   Public
-exports.getReserveds = async (req,res,next) => {
+exports.getReservations = async (req,res,next) => {
     let query;
 
     if(req.user.role !== 'admin') {
@@ -28,12 +28,12 @@ exports.getReserveds = async (req,res,next) => {
     }
 
     try {
-        const reserveds = await query;
+        const reservations = await query;
 
         res.status(200).json({
             success: true,
-            count: reserveds.length,
-            data: reserveds
+            count: reservations.length,
+            data: reservations
         })
     } catch (error) {
         console.log(error);
@@ -45,9 +45,9 @@ exports.getReserveds = async (req,res,next) => {
 };
 
 //@desc     Get single reserved
-//@route    Get /api/v1/reserveds/:id
+//@route    Get /api/v1/reservations/:id
 //@access   Public
-exports.getReserved = async (req,res,next) => {
+exports.getReservation = async (req,res,next) => {
     try {
         const reserved = await Reserved.findById(req.params.id).populate({
             path: 'campground',
@@ -71,7 +71,7 @@ exports.getReserved = async (req,res,next) => {
 //@desc     Add reserved
 //@route    POST /api/v1/campgrounds/:campgroundId/reserved
 //@access   Private
-exports.addReserved = async (req,res,next) => {
+exports.addReservation = async (req,res,next) => {
     try {
         req.body.campground = req.params.campgroundId;
 
@@ -82,9 +82,9 @@ exports.addReserved = async (req,res,next) => {
         }
 
         req.body.user = req.user.id;
-        const existedReserveds = await Reserved.find({user:req.user.id});
-        if(existedReserveds.length >= 3 && req.user.role !== 'admin') {
-            return res.status(400).json({success:false,message:`The user with ID ${req.user.id} has already made 3 Reserveds`});
+        const existedReservations = await Reserved.find({user:req.user.id});
+        if(existedReservations.length >= 3 && req.user.role !== 'admin') {
+            return res.status(400).json({success:false,message:`The user with ID ${req.user.id} has already made 3 reservations`});
         }
 
         const reserved = await Reserved.create(req.body);
@@ -96,23 +96,23 @@ exports.addReserved = async (req,res,next) => {
         
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false, message: "Cannot create Reserved"});
+        return res.status(500).json({success:false, message: "Cannot create reservation"});
     }
 };
 
 //@desc     Update reserved
-//@route    PUT /api/v1/reserveds/:id
+//@route    PUT /api/v1/reservations/:id
 //@access   Private
-exports.updateReserved = async (req,res,next) => {
+exports.updateReservation = async (req,res,next) => {
     try {
         let reserved = await Reserved.findById(req.params.id);
 
         if(!reserved) {
-            return res.status(404).json({success:false, message:`No reserved with the id of ${req.params.id}`});
+            return res.status(404).json({success:false, message:`No reservation with the id of ${req.params.id}`});
         }
 
         if(reserved.user.toString() !== req.user.id && req.user.role !== 'admin') {
-            return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to update this Reserved`});
+            return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to update this reservation`});
         }
 
         reserved = await reserved.findByIdAndUpdate(req.params.id,req.body,{
@@ -126,14 +126,14 @@ exports.updateReserved = async (req,res,next) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false,message:"Cannot update Reserved"});
+        return res.status(500).json({success:false,message:"Cannot update reservation"});
     }
 };
 
 //@desc     Delete reserved
-//@route    DELETE /api/v1/reserveds/:id
+//@route    DELETE /api/v1/reservations/:id
 //@access   Private
-exports.deleteReserved = async (req,res,next) => {
+exports.deleteReservation = async (req,res,next) => {
     try {
         const reserved = await Reserved.findById(req.params.id);
 
@@ -142,7 +142,7 @@ exports.deleteReserved = async (req,res,next) => {
         }
 
         if(reserved.user.toString() !== req.user.id && req.user.role !== 'admin') {
-            return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to delete this reserved`});
+            return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to delete this reservation`});
         }
 
         await reserved.deleteOne();

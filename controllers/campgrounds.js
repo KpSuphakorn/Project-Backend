@@ -23,10 +23,8 @@ exports.getCampgrounds = async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  ///////////////////////Don't forget .populate("reservations")/////////////////////////////////////////////////
   // Finding resource
-  query = Campground.find(JSON.parse(queryStr));
-  ////////////////////////////////////////////////////////////////////////
+  query = Campground.find(JSON.parse(queryStr)).populate("reservations");
 
   // Select Fields
   if (req.query.select) {
