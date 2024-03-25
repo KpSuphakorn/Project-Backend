@@ -62,10 +62,37 @@ exports.login = async (req , res , next) => {
     sendTokenResponse(user , 200 , res);
 
 } catch(err) {
-    return res.status(401).json({success : false , msg : 'Cannot convert email orr password to string'}) ;
+    return res.status(401).json({success : false , msg : 'Cannot convert email or password to string'}) ;
 }
 
 };
+
+//@desc Update user
+//@route PUT /api-information/users/:id
+//@access Private
+exports.update = async (req, res, next) => {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+  
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: `Cannot find user with id ${req.params.id}`,
+        });
+      }
+  
+      res.status(200).json({ success: true, data: user });
+    } catch (error) {
+      res.status(400).json({ success: false });
+    }
+  };
 
 //@desc         Log user out / clear cookie 
 //@route        GET /api/v1/auth/logout

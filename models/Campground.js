@@ -32,7 +32,28 @@ const CampgroundSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a telephone number"],
     },
+    url: {
+      type: String,
+      required: [true, "Please add a url"],
+    },
+    maxReservations: {
+      type: Number,
+      required: [true, "Please add a max reservation"]
+    },
+    coverpicture: {
+      type: String,
+      required: [true, "Please add a cover picture"],
+    },
+    picture: {
+      type: Array,
+      required: [true, "Please add a picture"],
+    },
+    description: {
+      type: String,
+      required: [true, "Please add a description"],
+    },
   },
+  
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
