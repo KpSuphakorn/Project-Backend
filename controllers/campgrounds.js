@@ -145,7 +145,7 @@ exports.updateCampground = async (req, res, next) => {
 //@access Private
 exports.deleteCampground = async (req, res, next) => {
   try {
-    const campground = Campground.findById(req.params.id);
+    const campground = await Campground.findById(req.params.id);
 
     if (!campground) {
       return res.status(404).json({
