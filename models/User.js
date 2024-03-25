@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: function(v) {
-                return /^\d{10}$/.test(v);
+                return /^\d{10}$/.test(v.replace(/-/g, ''));
             },
             message: props => `${props.value} is not a valid phone number! Please enter 10 digits.`
         }
