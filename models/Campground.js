@@ -55,6 +55,10 @@ const CampgroundSchema = mongoose.Schema(
     price: {
       type: Number,
       required: [true, "Please add a price"],
+    },
+    rating: {
+      type: Number,
+      required: [true, "Please add a rating"],
     }
   },
   
