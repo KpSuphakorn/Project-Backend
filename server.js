@@ -18,6 +18,34 @@ connectDB();
 
 const app=express();
 
+app.use(express.json());
+
+app.use(xss());
+
+app.use(helmet());
+
+app.use(mongoSanitize());
+
+app.use(cookieParser());
+
+const limiter = rateLimit({
+    windowsMs:10*60*1000,
+    max: 100
+});
+app.use(limiter);
+
+app.use(hpp());
+
+app.use(cors());
+
+const campgrounds = require('./routes/campgrounds');
+const users = require('./routes/users');
+const reservations = require('./routes/reservations');
+
+app.use('/api-informations/campgrounds', campgrounds);
+app.use('/api-informations/users', users);
+app.use('/api-informations/reservations', reservations);
+
 const PORT=process.env.PORT || 5000;
 
 const server = app.listen(
@@ -47,34 +75,6 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
-app.use(express.json());
-
-app.use(xss());
-
-app.use(helmet());
-
-app.use(mongoSanitize());
-
-app.use(cookieParser());
-
-const limiter = rateLimit({
-    windowsMs:10*60*1000,
-    max: 100
-});
-app.use(limiter);
-
-app.use(hpp());
-
-app.use(cors());
-
-const campgrounds = require('./routes/campgrounds');
-const users = require('./routes/users');
-const reservations = require('./routes/reservations');
-
-app.use('/api-informations/campgrounds', campgrounds);
-app.use('/api-informations/users', users);
-app.use('/api-informations/reservations', reservations);
 
 process.on('unhandledRejection',(err,promise)=> {
     console.log(`Error: ${err.message}`);
