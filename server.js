@@ -18,6 +18,16 @@ connectDB();
 
 const app=express();
 
+const PORT=process.env.PORT || 5000;
+
+const server = app.listen(
+    PORT, 
+    console.log('Server running in',
+        process.env.NODE_ENV,
+    'on ' + process.env.HOST + ":" + PORT
+    )
+);
+
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -28,7 +38,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:5000/api/api-informations'
+                url: process.env.HOST + ':' + PORT + '/api/api-informations'
             }
         ],
     },
@@ -65,10 +75,6 @@ const reservations = require('./routes/reservations');
 app.use('/api-informations/campgrounds', campgrounds);
 app.use('/api-informations/users', users);
 app.use('/api-informations/reservations', reservations);
-
-const PORT=process.env.PORT || 5000;
-
-const server = app.listen(PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ', PORT));
 
 process.on('unhandledRejection',(err,promise)=> {
     console.log(`Error: ${err.message}`);
