@@ -10,19 +10,19 @@ exports.getReservations = async (req,res,next) => {
     if(req.user.role !== 'admin') {
         query = Reservation.find({user:req.user.id}).populate({
             path: 'campground',
-            select: 'name address tel url'
+            select: 'name address district province region postalcode tel url maxReservations coverpicture picture description price rating'
         });
     } else {
         if(req.params.campgroundId) {
             console.log(req.params.campgroundId);
             query = Reservation.find({campground:req.params.campgroundId}).populate({
                 path: "campground",
-                select: "name address tel url",
+                select: "name address district province region postalcode tel url maxReservations coverpicture picture description price rating",
             });
         } else {
             query = Reservation.find().populate({
                 path: 'campground',
-                select: 'name address tel url'
+                select: 'name address district province region postalcode tel url maxReservations coverpicture picture description price rating'
             });
         }
     }
@@ -51,7 +51,7 @@ exports.getReservation = async (req,res,next) => {
     try {
         const reservation = await Reservation.findById(req.params.id).populate({
             path: 'campground',
-            select: 'name address tel url'
+            select: 'name address district province region postalcode tel url maxReservations coverpicture picture description price rating'
         });
 
         if(!reservation) {
